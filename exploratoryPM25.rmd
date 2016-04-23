@@ -1,5 +1,5 @@
 ---
-title: "Exploratory data anlysis of US PM2.5 emission"
+title: "Exploratory data analysis of US PM2.5 emission"
 author: "Wei Wei"
 date: "April 16, 2016"
 output: 
