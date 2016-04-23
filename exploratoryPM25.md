@@ -1,4 +1,4 @@
-# Exploratory data anlysis of US PM2.5 emission
+# Exploratory data analysis of US PM2.5 emission
 Wei Wei  
 April 16, 2016  
 
