@@ -18,29 +18,38 @@ For each year and for each type of PM source, the NEI records how many tons of P
 
 [1]: https://www.epa.gov/air-emissions-inventories "EPA National Emissions Inventory web site"
 [2]: https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip "data"
-```{r}
+```{r load data}
 rm(list=ls())
 
+## download file
+dataFileUrl <- 'https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip'
+
+if (!dir.exists('../webData')) {dir.create('../webData')}
+if (!file.exists('../webData/NEIdata.zip')) 
+    {download.file(dataFileUrl, destfile='../webData/NEIdata.zip', method='curl')}
+
+## unzip into working directory
+unzip('../webData/NEIdata.zip')
+
 ## read both the data file and the code book
-NEI <- readRDS("summarySCC_PM25.rds")
-SCC <- readRDS("Source_Classification_Code.rds")
+NEI <- readRDS('summarySCC_PM25.rds')
+SCC <- readRDS('Source_Classification_Code.rds')
 ```
 ```{r}
 str(NEI); str(SCC)
 ```
-NEI is a table of 6497651 rows x 6 columns; SCC is a table of 11717 rows x 15 columns.
+NEI is a data.frame table of 6497651 rows x 6 columns; SCC is a data.frame table of 11717 rows x 15 columns.
 
 ```{r}
-table(is.na(NEI$year))
-table(is.na(NEI$Emissions))
+table(is.na(NEI$year)); table(is.na(NEI$Emissions))
 ```
 There are no missing data (NAs) in the "year" and "Emissions" columns in the NEI table.
 
 ### Q: Have total emissions from PM2.5 decreased in the United States from 1999 to 2008?
     
 ```{r}
-suppressPackageStartupMessages(library("dplyr"))
-library(dplyr)
+suppressPackageStartupMessages(library(dplyr))
+
 annualSum <- NEI %>% group_by(year) %>% summarize(total=sum(Emissions))
 annualSum <- transform(annualSum, year=factor(year))
 
@@ -149,3 +158,4 @@ g <- g + labs(x="Year", y="PM2.5 emission (tons)")
 g <- g + labs(title="Total motor vehicle PM2.5 emission in Los Angeles vs in Baltimore City")
 print(g)
 ```
+

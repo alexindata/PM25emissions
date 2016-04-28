@@ -122,9 +122,19 @@ $(document).ready(function () {
 <p>For each year and for each type of PM source, the NEI records how many tons of PM2.5 were emitted from that source over the course of the entire year. The <a href="https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip" title="data">data</a> used for this Coursera Data Science Specialization-Exploratory Data Analysis assignment are for 1999, 2002, 2005, and 2008.</p>
 <pre class="r"><code>rm(list=ls())
 
+## download file
+dataFileUrl &lt;- 'https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip'
+
+if (!dir.exists('../webData')) {dir.create('../webData')}
+if (!file.exists('../webData/NEIdata.zip')) 
+    {download.file(dataFileUrl, destfile='../webData/NEIdata.zip', method='curl')}
+
+## unzip into working directory
+unzip('../webData/NEIdata.zip')
+
 ## read both the data file and the code book
-NEI &lt;- readRDS(&quot;summarySCC_PM25.rds&quot;)
-SCC &lt;- readRDS(&quot;Source_Classification_Code.rds&quot;)</code></pre>
+NEI &lt;- readRDS('summarySCC_PM25.rds')
+SCC &lt;- readRDS('Source_Classification_Code.rds')</code></pre>
 <pre class="r"><code>str(NEI); str(SCC)</code></pre>
 <pre><code>## 'data.frame':    6497651 obs. of  6 variables:
 ##  $ fips     : chr  &quot;09001&quot; &quot;09001&quot; &quot;09001&quot; &quot;09001&quot; ...
@@ -149,20 +159,19 @@ SCC &lt;- readRDS(&quot;Source_Classification_Code.rds&quot;)</code></pre>
 ##  $ Created_Date       : Factor w/ 57 levels &quot;&quot;,&quot;1/27/2000 0:00:00&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Revised_Date       : Factor w/ 44 levels &quot;&quot;,&quot;1/27/2000 0:00:00&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Usage.Notes        : Factor w/ 21 levels &quot;&quot;,&quot; &quot;,&quot;includes bleaching towers, washer hoods, filtrate tanks, vacuum pump exhausts&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-<p>NEI is a table of 6497651 rows x 6 columns; SCC is a table of 11717 rows x 15 columns.</p>
-<pre class="r"><code>table(is.na(NEI$year))</code></pre>
+<p>NEI is a data.frame table of 6497651 rows x 6 columns; SCC is a data.frame table of 11717 rows x 15 columns.</p>
+<pre class="r"><code>table(is.na(NEI$year)); table(is.na(NEI$Emissions))</code></pre>
 <pre><code>## 
 ##   FALSE 
 ## 6497651</code></pre>
-<pre class="r"><code>table(is.na(NEI$Emissions))</code></pre>
 <pre><code>## 
 ##   FALSE 
 ## 6497651</code></pre>
 <p>There are no missing data (NAs) in the “year” and “Emissions” columns in the NEI table.</p>
 <div id="q-have-total-emissions-from-pm2.5-decreased-in-the-united-states-from-1999-to-2008" class="section level3">
 <h3>Q: Have total emissions from PM2.5 decreased in the United States from 1999 to 2008?</h3>
-<pre class="r"><code>suppressPackageStartupMessages(library(&quot;dplyr&quot;))
-library(dplyr)
+<pre class="r"><code>suppressPackageStartupMessages(library(dplyr))
+
 annualSum &lt;- NEI %&gt;% group_by(year) %&gt;% summarize(total=sum(Emissions))
 annualSum &lt;- transform(annualSum, year=factor(year))
 

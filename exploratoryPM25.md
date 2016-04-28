@@ -15,9 +15,19 @@ For each year and for each type of PM source, the NEI records how many tons of P
 ```r
 rm(list=ls())
 
+## download file
+dataFileUrl <- 'https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip'
+
+if (!dir.exists('../webData')) {dir.create('../webData')}
+if (!file.exists('../webData/NEIdata.zip')) 
+    {download.file(dataFileUrl, destfile='../webData/NEIdata.zip', method='curl')}
+
+## unzip into working directory
+unzip('../webData/NEIdata.zip')
+
 ## read both the data file and the code book
-NEI <- readRDS("summarySCC_PM25.rds")
-SCC <- readRDS("Source_Classification_Code.rds")
+NEI <- readRDS('summarySCC_PM25.rds')
+SCC <- readRDS('Source_Classification_Code.rds')
 ```
 
 ```r
@@ -52,21 +62,17 @@ str(NEI); str(SCC)
 ##  $ Revised_Date       : Factor w/ 44 levels "","1/27/2000 0:00:00",..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Usage.Notes        : Factor w/ 21 levels ""," ","includes bleaching towers, washer hoods, filtrate tanks, vacuum pump exhausts",..: 1 1 1 1 1 1 1 1 1 1 ...
 ```
-NEI is a table of 6497651 rows x 6 columns; SCC is a table of 11717 rows x 15 columns.
+NEI is a data.frame table of 6497651 rows x 6 columns; SCC is a data.frame table of 11717 rows x 15 columns.
 
 
 ```r
-table(is.na(NEI$year))
+table(is.na(NEI$year)); table(is.na(NEI$Emissions))
 ```
 
 ```
 ## 
 ##   FALSE 
 ## 6497651
-```
-
-```r
-table(is.na(NEI$Emissions))
 ```
 
 ```
@@ -80,8 +86,8 @@ There are no missing data (NAs) in the "year" and "Emissions" columns in the NEI
     
 
 ```r
-suppressPackageStartupMessages(library("dplyr"))
-library(dplyr)
+suppressPackageStartupMessages(library(dplyr))
+
 annualSum <- NEI %>% group_by(year) %>% summarize(total=sum(Emissions))
 annualSum <- transform(annualSum, year=factor(year))
 
@@ -92,7 +98,7 @@ title(main="Total PM2.5 emission nation-wide from all sources")
 abline(h=annualSum[annualSum$year==2008, ]$total, col="red")
 ```
 
-![](exploratoryPM25_files/figure-html/unnamed-chunk-4-1.png)
+![](exploratoryPM25_files/figure-html/unnamed-chunk-3-1.png)
     
 ### Q: Have total emissions from PM2.5 decreased in the Baltimore City, Maryland (fips == "24510") from 1999 to 2008?
       
@@ -109,7 +115,7 @@ title(main="Total PM2.5 emission from all sources in Baltimore City")
 abline(h=annualSumBC[annualSumBC$year==2008, ]$total, col="red")
 ```
 
-![](exploratoryPM25_files/figure-html/unnamed-chunk-5-1.png)
+![](exploratoryPM25_files/figure-html/unnamed-chunk-4-1.png)
     
 ### Q: Of the four types of sources indicated by the type (point, nonpoint, onroad, nonroad) variable, which of these four sources have seen decreases in emissions from 1999–2008 for Baltimore City? Which have seen increases in emissions from 1999–2008?
     
@@ -129,7 +135,7 @@ g <- g + labs(x="Year", y="PM2.5 emission (tons)") + labs(title="Total PM2.5 emi
 print(g)
 ```
 
-![](exploratoryPM25_files/figure-html/unnamed-chunk-6-1.png)
+![](exploratoryPM25_files/figure-html/unnamed-chunk-5-1.png)
     
 ### Q: Across the United States, how have emissions from coal combustion-related sources changed from 1999–2008?
     
@@ -176,7 +182,7 @@ title(main="Total PM2.5 emission nation-wide from coal combustion")
 abline(h=annualSumCoal[annualSumCoal$year==2008, ]$total, col="red")
 ```
 
-![](exploratoryPM25_files/figure-html/unnamed-chunk-7-1.png)
+![](exploratoryPM25_files/figure-html/unnamed-chunk-6-1.png)
    
 ### Q: How have emissions from motor vehicle sources changed from 1999–2008 in Baltimore City?
     
@@ -196,7 +202,7 @@ title(main="Total PM2.5 emission from motor vehicles in Baltimore City")
 abline(h=annualSumVehicleBC[annualSumVehicleBC$year==2008, ]$total, col="red")
 ```
 
-![](exploratoryPM25_files/figure-html/unnamed-chunk-8-1.png)
+![](exploratoryPM25_files/figure-html/unnamed-chunk-7-1.png)
     
 ### Q: Compare emissions from motor vehicle sources in Baltimore City with emissions from motor vehicle sources in Los Angeles County, California (fips == "06037"). Which city has seen greater changes over time in motor vehicle emissions?
     
@@ -223,4 +229,5 @@ g <- g + labs(title="Total motor vehicle PM2.5 emission in Los Angeles vs in Bal
 print(g)
 ```
 
-![](exploratoryPM25_files/figure-html/unnamed-chunk-9-1.png)
+![](exploratoryPM25_files/figure-html/unnamed-chunk-8-1.png)
+
