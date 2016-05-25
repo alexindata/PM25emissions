@@ -5,7 +5,7 @@ April 16, 2016
 
 # Background information
 
-Fine particulate matter (PM2.5) is an ambient air pollutant for which there is strong evidence that it is harmful to human health. In the United States, the Environmental Protection Agency (EPA) is tasked with setting national ambient air quality standards for fine PM and for tracking the emissions of this pollutant into the atmosphere. Approximatly every 3 years, the EPA releases its database on emissions of PM2.5. This database is known as the National Emissions Inventory (NEI). You can read more information about the NEI at the [EPA National Emissions Inventory web site][1].
+Fine particulate matter (PM2.5) is an ambient air pollutant for which there is strong evidence that it is harmful to human health. In the United States, the Environmental Protection Agency (EPA) is tasked with setting national ambient air quality standards for fine PM and for tracking the emissions of this pollutant into the atmosphere. Approximately every 3 years, the EPA releases its database on emissions of PM2.5. This database is known as the National Emissions Inventory (NEI). You can read more information about the NEI at the [EPA National Emissions Inventory web site][1].
 
 For each year and for each type of PM source, the NEI records how many tons of PM2.5 were emitted from that source over the course of the entire year. The [data][2] used for this Coursera Data Science Specialization-Exploratory Data Analysis assignment are for 1999, 2002, 2005, and 2008.
 
@@ -98,7 +98,7 @@ title(main="Total PM2.5 emission nation-wide from all sources")
 abline(h=annualSum[annualSum$year==2008, ]$total, col="red")
 ```
 
-![](exploratoryPM25_files/figure-html/unnamed-chunk-3-1.png)
+![](exploratoryPM25_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
     
 ### Q: Have total emissions from PM2.5 decreased in the Baltimore City, Maryland (fips == "24510") from 1999 to 2008?
       
@@ -115,7 +115,7 @@ title(main="Total PM2.5 emission from all sources in Baltimore City")
 abline(h=annualSumBC[annualSumBC$year==2008, ]$total, col="red")
 ```
 
-![](exploratoryPM25_files/figure-html/unnamed-chunk-4-1.png)
+![](exploratoryPM25_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
     
 ### Q: Of the four types of sources indicated by the type (point, nonpoint, onroad, nonroad) variable, which of these four sources have seen decreases in emissions from 1999–2008 for Baltimore City? Which have seen increases in emissions from 1999–2008?
     
@@ -135,7 +135,7 @@ g <- g + labs(x="Year", y="PM2.5 emission (tons)") + labs(title="Total PM2.5 emi
 print(g)
 ```
 
-![](exploratoryPM25_files/figure-html/unnamed-chunk-5-1.png)
+![](exploratoryPM25_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
     
 ### Q: Across the United States, how have emissions from coal combustion-related sources changed from 1999–2008?
     
@@ -182,7 +182,7 @@ title(main="Total PM2.5 emission nation-wide from coal combustion")
 abline(h=annualSumCoal[annualSumCoal$year==2008, ]$total, col="red")
 ```
 
-![](exploratoryPM25_files/figure-html/unnamed-chunk-6-1.png)
+![](exploratoryPM25_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
    
 ### Q: How have emissions from motor vehicle sources changed from 1999–2008 in Baltimore City?
     
@@ -202,7 +202,7 @@ title(main="Total PM2.5 emission from motor vehicles in Baltimore City")
 abline(h=annualSumVehicleBC[annualSumVehicleBC$year==2008, ]$total, col="red")
 ```
 
-![](exploratoryPM25_files/figure-html/unnamed-chunk-7-1.png)
+![](exploratoryPM25_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
     
 ### Q: Compare emissions from motor vehicle sources in Baltimore City with emissions from motor vehicle sources in Los Angeles County, California (fips == "06037"). Which city has seen greater changes over time in motor vehicle emissions?
     
@@ -229,5 +229,5 @@ g <- g + labs(title="Total motor vehicle PM2.5 emission in Los Angeles vs in Bal
 print(g)
 ```
 
-![](exploratoryPM25_files/figure-html/unnamed-chunk-8-1.png)
+![](exploratoryPM25_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
